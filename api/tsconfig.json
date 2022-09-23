@@ -12,10 +12,17 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@entities/*": ["./src/core/entities/*"],
+      "@repositories/*": ["./src/core/repositories/*"],
+      "@usecases": ["./src/core/usecases"],
+      "@usecases/*": ["./src/core/usecases/*"]
+    }
   }
 }
+
