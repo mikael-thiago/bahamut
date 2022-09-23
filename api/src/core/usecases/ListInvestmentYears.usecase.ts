@@ -4,16 +4,16 @@ import { UseCase } from '../shared/UseCase';
 import { UserKeyType } from '@entities/User';
 
 //------------------------- DEFINITION -------------------------------------------//
-export type ListInvestimentYearsRequest = {
+export type ListInvestmentYearsRequest = {
   userId: UserKeyType;
 };
 
-export type ListInvestimentYearsResponse = { year: number; balance: number }[];
+export type ListInvestmentYearsResponse = { year: number; balance: number }[];
 
-export abstract class ListInvestimentYearsUseCase
-  implements UseCase<ListInvestimentYearsRequest, ListInvestimentYearsResponse>
+export abstract class ListInvestmentYearsUseCase
+  implements UseCase<ListInvestmentYearsRequest, ListInvestmentYearsResponse>
 {
-  abstract execute(request: ListInvestimentYearsRequest): Promise<ListInvestimentYearsResponse>;
+  abstract execute(request: ListInvestmentYearsRequest): Promise<ListInvestmentYearsResponse>;
 }
 
 interface Holding {
@@ -24,17 +24,17 @@ interface Holding {
 type AssetCode = string;
 //------------------------- END DEFINITION -------------------------------------------//
 
-export class ListInvestimentYearsUseCaseImpl implements ListInvestimentYearsUseCase {
+export class ListInvestmentYearsUseCaseImpl implements ListInvestmentYearsUseCase {
   constructor(private _operationRepository: OperationRepository) {}
 
-  async execute(request: ListInvestimentYearsRequest): Promise<ListInvestimentYearsResponse> {
+  async execute(request: ListInvestmentYearsRequest): Promise<ListInvestmentYearsResponse> {
     const { userId } = request;
 
     const operationsByYear = await this._operationRepository.getOperationsGroupedByYear({
       userId,
     });
 
-    const balanceByYear: ListInvestimentYearsResponse = [];
+    const balanceByYear: ListInvestmentYearsResponse = [];
 
     let holdings: Record<AssetCode, Holding> = {};
 

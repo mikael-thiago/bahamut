@@ -1,5 +1,5 @@
 import { AppConfig, CachedOperations } from '../config';
-import { ListInvestimentYearsUseCaseImpl, RegisterOperationUseCaseImpl, UpdateOperationUseCaseImpl } from '@usecases';
+import { ListInvestmentYearsUseCaseImpl, RegisterOperationUseCaseImpl, UpdateOperationUseCaseImpl } from '@usecases';
 
 import { Cache } from 'cache-manager';
 import { CachedUseCaseProxy } from './proxies/CachedUseCaseProxy';
@@ -47,7 +47,7 @@ export const listInvestimentYearsUseCaseFactory = ({
   cache: Cache;
   appConfig: AppConfig;
 }) => {
-  const listInvestimentYears = new ListInvestimentYearsUseCaseImpl(operationRepository);
+  const listInvestimentYears = new ListInvestmentYearsUseCaseImpl(operationRepository);
 
   return new CachedUseCaseProxy(
     listInvestimentYears,

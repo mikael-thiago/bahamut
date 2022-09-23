@@ -11,7 +11,7 @@ import {
 import { AppConfig } from '../config';
 import { Cache } from 'cache-manager';
 import CryptoService from 'src/core/services/CryptoService';
-import { ListInvestimentYearsUseCase } from 'src/core/usecases/ListInvestimentYears.usecase';
+import { ListInvestmentYearsUseCase } from '@usecases/ListInvestmentYears.usecase';
 import { OperationRepository } from '@repositories/OperationRepository';
 import { RegisterOperationUseCase } from 'src/core/usecases/RegisterOperation.usecase';
 import { RepositoriesModule } from '../repositories/repositories.module';
@@ -35,7 +35,7 @@ import { UserRepository } from '@repositories/UserRepository';
       inject: [OperationRepository, CACHE_MANAGER, AppConfig],
     },
     {
-      provide: ListInvestimentYearsUseCase,
+      provide: ListInvestmentYearsUseCase,
       useFactory: (operationRepository: OperationRepository, cache: Cache, appConfig: AppConfig) =>
         listInvestimentYearsUseCaseFactory({ operationRepository, cache, appConfig }),
       inject: [OperationRepository, CACHE_MANAGER, AppConfig],
@@ -53,6 +53,6 @@ import { UserRepository } from '@repositories/UserRepository';
       inject: [UserRepository, CryptoService],
     },
   ],
-  exports: [RegisterOperationUseCase, UpdateOperationUseCase, ListInvestimentYearsUseCase, LoginUseCase, SignUpUseCase],
+  exports: [RegisterOperationUseCase, UpdateOperationUseCase, ListInvestmentYearsUseCase, LoginUseCase, SignUpUseCase],
 })
 export class UseCasesModule {}

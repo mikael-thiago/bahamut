@@ -1,11 +1,11 @@
 import { Body, CacheInterceptor, CacheKey, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ListInvestimentYearsUseCase, RegisterOperationUseCase } from '@usecases';
+import { ListInvestmentYearsUseCase, RegisterOperationUseCase } from '@usecases';
 import { AuthenticatedUser, JwtGuard, User } from '../authentication';
 
 @UseGuards(JwtGuard)
 @Controller('operations')
 export class OperationController {
-  constructor(private _listYears: ListInvestimentYearsUseCase, private _registerOperation: RegisterOperationUseCase) {}
+  constructor(private _listYears: ListInvestmentYearsUseCase, private _registerOperation: RegisterOperationUseCase) {}
 
   @Get('/groupedByYear')
   listOperationsGroupedByYear(@User() user: AuthenticatedUser) {
