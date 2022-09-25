@@ -37,11 +37,9 @@ export class LoginUseCaseImpl implements LoginUseCase {
     const { email, password } = request;
     const user = await this._userRepository.findByEmail(email);
 
-    if (user) console.log({ ...user });
-
     const userExists = !!user;
 
-    const isPasswordCorrect = user && this._cryptoService.verify(user.password, password);
+    const isPasswordCorrect = user && (await this._cryptoService.verify(password, user.password));
 
     if (!userExists || !isPasswordCorrect) return new LoginFailedError();
 

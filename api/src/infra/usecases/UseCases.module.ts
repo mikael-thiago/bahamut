@@ -9,6 +9,7 @@ import {
 } from './factories';
 
 import { AppConfig } from '../config';
+import { BalanceCalculatorService } from 'src/core/services/BalanceCalculatorService';
 import { Cache } from 'cache-manager';
 import CryptoService from 'src/core/services/CryptoService';
 import { ListInvestmentYearsUseCase } from '@usecases/ListInvestmentYears.usecase';
@@ -36,9 +37,13 @@ import { UserRepository } from '@repositories/UserRepository';
     },
     {
       provide: ListInvestmentYearsUseCase,
-      useFactory: (operationRepository: OperationRepository, cache: Cache, appConfig: AppConfig) =>
-        listInvestimentYearsUseCaseFactory({ operationRepository, cache, appConfig }),
-      inject: [OperationRepository, CACHE_MANAGER, AppConfig],
+      useFactory: (
+        operationRepository: OperationRepository,
+        cache: Cache,
+        appConfig: AppConfig,
+        balanceCalculator: BalanceCalculatorService,
+      ) => listInvestimentYearsUseCaseFactory({ operationRepository, cache, appConfig, balanceCalculator }),
+      inject: [OperationRepository, CACHE_MANAGER, AppConfig, BalanceCalculatorService],
     },
     {
       provide: LoginUseCase,

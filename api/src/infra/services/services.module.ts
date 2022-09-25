@@ -1,3 +1,5 @@
+import { BalanceCalculatorService } from 'src/core/services/BalanceCalculatorService';
+import { BalanceCalculatorServiceImpl } from './BalanceCalculatorService';
 import CryptoService from 'src/core/services/CryptoService';
 import { CryptoServiceImpl } from './CryptoService';
 import { JwtModule } from '@nestjs/jwt';
@@ -17,7 +19,8 @@ const { TOKEN_SECRET } = process.env;
   providers: [
     { provide: TokenService, useClass: TokenServiceImpl },
     { provide: CryptoService, useClass: CryptoServiceImpl },
+    { provide: BalanceCalculatorService, useClass: BalanceCalculatorServiceImpl },
   ],
-  exports: [TokenService, CryptoService],
+  exports: [TokenService, CryptoService, BalanceCalculatorService],
 })
 export class ServicesModule {}

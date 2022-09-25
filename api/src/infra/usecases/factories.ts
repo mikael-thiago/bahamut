@@ -1,6 +1,7 @@
 import { AppConfig, CachedOperations } from '../config';
 import { ListInvestmentYearsUseCaseImpl, RegisterOperationUseCaseImpl, UpdateOperationUseCaseImpl } from '@usecases';
 
+import { BalanceCalculatorService } from 'src/core/services/BalanceCalculatorService';
 import { Cache } from 'cache-manager';
 import { CachedUseCaseProxy } from './proxies/CachedUseCaseProxy';
 import { InvalidCacheUseCaseProxy } from './proxies/InvalidCacheUseCaseProxy';
@@ -42,12 +43,14 @@ export const listInvestimentYearsUseCaseFactory = ({
   operationRepository,
   cache,
   appConfig,
+  balanceCalculator,
 }: {
   operationRepository: OperationRepository;
   cache: Cache;
   appConfig: AppConfig;
+  balanceCalculator: BalanceCalculatorService;
 }) => {
-  const listInvestimentYears = new ListInvestmentYearsUseCaseImpl(operationRepository);
+  const listInvestimentYears = new ListInvestmentYearsUseCaseImpl(operationRepository, balanceCalculator);
 
   return new CachedUseCaseProxy(
     listInvestimentYears,
