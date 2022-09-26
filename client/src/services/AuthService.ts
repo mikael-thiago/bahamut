@@ -18,18 +18,15 @@ export abstract class AuthService {
 export class AuthServiceImpl implements AuthService {
   constructor(private _api: HttpAdapter) {}
 
-  login(request: LoginRequest): Promise<{ token: string }> {
+  login = (request: LoginRequest): Promise<{ token: string }> => {
     return this._api.post("auth/login", request);
-  }
+  };
 
-  signUp(request: SignUpRequest): Promise<void> {
+  signUp = (request: SignUpRequest): Promise<void> => {
     return this._api.post("auth/sign-up", request);
-  }
+  };
 }
 
 const authService: AuthService = new AuthServiceImpl(httpAdapter);
 
-export const useAuthService = (): AuthService => ({
-  login: authService.login.bind(authService),
-  signUp: authService.signUp.bind(authService),
-});
+export const useAuthService = (): AuthService => authService;

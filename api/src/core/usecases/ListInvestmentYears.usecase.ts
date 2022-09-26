@@ -1,6 +1,5 @@
 import { AssetCode, BalanceCalculatorService, Holding } from '../services/BalanceCalculatorService';
 
-import { Operation } from '@entities/Operation';
 import { OperationRepository } from '../repositories/OperationRepository';
 import { UseCase } from '../shared/UseCase';
 import { UserKeyType } from '@entities/User';
@@ -47,9 +46,9 @@ export class ListInvestmentYearsUseCaseImpl implements ListInvestmentYearsUseCas
 
       const {
         balance,
-        holdings: lastHoldings,
         balancePercentage,
         totals,
+        holdings: lastHoldings,
       } = this._balanceCalculator.calculateBalance(yearOperations, holdings);
 
       balanceByYear.push({ year: +year, balance, balancePercentage, totals });

@@ -14,11 +14,10 @@ import {
 } from "@chakra-ui/react";
 import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { FC, useState } from "react";
-import { LoginRequest, SignUpRequest, useAuthService } from "../../services/AuthService";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { SignUpRequest, useAuthService } from "../../services/AuthService";
 
 import { useFormik } from "formik";
-import { useUnloggedAuthContext } from "../../contexts/AuthContext";
 
 const useSignUpForm = () => {
   const { signUp } = useAuthService();
@@ -66,7 +65,7 @@ const useSignUpForm = () => {
   };
 };
 
-export const SignUp: FC = () => {
+export const SignUp = () => {
   const { isLoading, errors, signUpForm, isPasswordVisible, togglePasswordVisible } =
     useSignUpForm();
 
