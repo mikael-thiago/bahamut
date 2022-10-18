@@ -16,6 +16,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { SignUp } from "./pages/SignUp/SignUp";
 import { theme } from "../theme";
+import { InvestmentYearDetails } from "./pages/InvestmentYearDetails/InvestmentYearDetails";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/" element={<LoggedGuard />}>
         <Route path="/dashboard" element={<Dashboard />}></Route>
+        <Route path="/year/:year" element={<InvestmentYearDetails />}></Route>
       </Route>
     </>
   )

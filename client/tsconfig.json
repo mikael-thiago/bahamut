@@ -16,8 +16,14 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@services/*": ["./src/services/*"]
-    }
+      "@services/*": ["./src/services/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@shared/*": ["./src/shared/*"],
+    },
+    "typeRoots": [
+      "@node_modules/@types",
+      "./src/global.d.ts"
+    ]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

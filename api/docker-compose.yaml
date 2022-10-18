@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  behemot-db:
+  bahamut-db:
     image: mysql:8.0.30
     restart: always
     environment:
@@ -21,8 +21,8 @@ services:
       # Where our data will be persisted
     volumes:
       - my-db:/var/lib/mysql
-  behemot-api:
-    container_name: behemot-api
+  bahamut-api:
+    container_name: bahamut-api
     restart: always
     build:
       context: ./
@@ -36,12 +36,12 @@ services:
     ports:
       - $PORT:$PORT
     volumes:
-      - ./src:/home/node/dev/behemot/src
-      - ./tsconfig.json:/home/node/dev/behemot/tsconfig.json
+      - ./src:/home/node/dev/bahamut/src
+      - ./tsconfig.json:/home/node/dev/bahamut/tsconfig.json
       # - ./node_modules:/home/node/vapour/catalog/node_modules
     command: npm run start:dev
     depends_on: 
-      - behemot-db
+      - bahamut-db
 
 # Names our volume
 volumes:

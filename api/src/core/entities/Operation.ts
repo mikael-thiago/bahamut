@@ -16,11 +16,25 @@ export interface OperationProps {
   userId: UserKeyType;
 }
 
+const alignOperationPropertiesEnumerability = (operation: Operation) => {
+  Object.defineProperty(operation, 'id', { get: () => operation['_id'], enumerable: true });
+  Object.defineProperty(operation, 'assetCode', { get: () => operation['_props'].assetCode, enumerable: true });
+  Object.defineProperty(operation, 'date', { get: () => operation['_props'].date, enumerable: true });
+  Object.defineProperty(operation, 'quantity', { get: () => operation['_props'].quantity, enumerable: true });
+  Object.defineProperty(operation, 'type', { get: () => operation['_props'].type, enumerable: true });
+  Object.defineProperty(operation, 'userId', { get: () => operation['_props'].userId, enumerable: true });
+  Object.defineProperty(operation, 'valuePerAsset', { get: () => operation['_props'].valuePerAsset, enumerable: true });
+  Object.defineProperty(operation, '_props', { enumerable: false });
+  Object.defineProperty(operation, '_id', { enumerable: false });
+};
+
 export class Operation {
   private _id: OperationKeyType;
 
   constructor(private _props: OperationProps, id?: OperationKeyType) {
     this._id = id ?? crypto.randomUUID();
+
+    alignOperationPropertiesEnumerability(this);
   }
 
   get id(): OperationKeyType {

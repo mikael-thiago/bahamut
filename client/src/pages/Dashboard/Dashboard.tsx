@@ -1,9 +1,11 @@
-import { InvestmentYear, useOperationService } from "../../services/OperationService";
+import { InvestmentYear, useOperationService } from "@services/OperationService";
 import { useEffect, useState } from "react";
 
 import { CircularProgress } from "@chakra-ui/react";
-import { InvestmentYearCard } from "./InvestmentYearCard";
 import { useNavigate } from "react-router-dom";
+import { NoYearsInvested } from "./NoYearsInvested";
+import { InvestmentPeriodCard } from "@shared/InvestmentPeriodCard";
+import { useOperationModalContainer } from "@shared/OperationModal/hooks";
 
 const useInvestmentYears = () => {
   const [investmentYears, setInvestmentYears] = useState<null | InvestmentYear[]>(null);
@@ -27,17 +29,28 @@ const useNavigateToYearDetails = () => {
 export const Dashboard = () => {
   const { investmentYears } = useInvestmentYears();
   const { navigateToYearDetails } = useNavigateToYearDetails();
+  const { OperationModal, openOperationModal } = useOperationModalContainer();
+
+  const hasInvestmentYearsLoaded = !!investmentYears;
+  const hasInvestmentYears = hasInvestmentYearsLoaded && !!investmentYears.length;
 
   return (
-    <div className="w-full h-full flex gap-6">
-      {investmentYears &&
+    <div className="w-full h-full flex justify-center items-center p-6 gap-6">
+      {!hasInvestmentYearsLoaded && <CircularProgress isIndeterminate />}
+
+      {hasInvestmentYears &&
         investmentYears.map(investmentYear => (
-          <InvestmentYearCard
-            investmentYear={investmentYear}
+          <InvestmentPeriodCard
+            key={investmentYear.year}
+            investmentPeriod={{ ...investmentYear, period: investmentYear.year }}
             onClick={() => navigateToYearDetails(investmentYear.year)}
           />
         ))}
-      {!investmentYears && <CircularProgress isIndeterminate />}
+      {hasInvestmentYearsLoaded && !hasInvestmentYears && (
+        <NoYearsInvested onAddOperation={openOperationModal} />
+      )}
+
+      <OperationModal />
     </div>
   );
 };

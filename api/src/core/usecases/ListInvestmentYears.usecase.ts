@@ -3,18 +3,14 @@ import { AssetCode, BalanceCalculatorService, Holding } from '../services/Balanc
 import { OperationRepository } from '../repositories/OperationRepository';
 import { UseCase } from '../shared/UseCase';
 import { UserKeyType } from '@entities/User';
+import { InvestmentDetailsDTO } from '../dtos/InvestmentDetailsDTO';
 
 //------------------------- DEFINITION -------------------------------------------//
 export type ListInvestmentYearsRequest = {
   userId: UserKeyType;
 };
 
-export type ListInvestmentYearsResponse = {
-  year: number;
-  balance: number;
-  balancePercentage: number;
-  totals: { buys: number; sells: number };
-}[];
+export type ListInvestmentYearsResponse = (InvestmentDetailsDTO & { year: number })[];
 
 export abstract class ListInvestmentYearsUseCase
   implements UseCase<ListInvestmentYearsRequest, ListInvestmentYearsResponse>
@@ -37,11 +33,15 @@ export class ListInvestmentYearsUseCaseImpl implements ListInvestmentYearsUseCas
       userId,
     });
 
+    const sortedYears = Object.keys(operationsByYear)
+      .map((year) => +year)
+      .sort((a, b) => a - b);
+
     const balanceByYear: ListInvestmentYearsResponse = [];
 
     let holdings: Record<AssetCode, Holding> = {};
 
-    for (const year in operationsByYear) {
+    for (const year of sortedYears) {
       const yearOperations = operationsByYear[year];
 
       const {

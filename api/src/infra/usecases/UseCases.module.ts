@@ -19,6 +19,11 @@ import { RepositoriesModule } from '../repositories/repositories.module';
 import { ServicesModule } from '../services/services.module';
 import { TokenService } from 'src/core/services/TokenService';
 import { UserRepository } from '@repositories/UserRepository';
+import {
+  GetInvestmentYearDetailsUseCase,
+  GetInvestmentYearDetailsUseCaseImpl,
+} from '@usecases/GetInvestmentYearDetails.usecase';
+import { ListYearOperationsUseCase, ListYearOperationsUseCaseImpl } from '@usecases/ListOperations.usecase';
 
 @Module({
   imports: [RepositoriesModule, ServicesModule],
@@ -36,6 +41,11 @@ import { UserRepository } from '@repositories/UserRepository';
       inject: [OperationRepository, CACHE_MANAGER, AppConfig],
     },
     {
+      provide: ListYearOperationsUseCase,
+      useFactory: (operationRepository: OperationRepository) => new ListYearOperationsUseCaseImpl(operationRepository),
+      inject: [OperationRepository],
+    },
+    {
       provide: ListInvestmentYearsUseCase,
       useFactory: (
         operationRepository: OperationRepository,
@@ -44,6 +54,12 @@ import { UserRepository } from '@repositories/UserRepository';
         balanceCalculator: BalanceCalculatorService,
       ) => listInvestimentYearsUseCaseFactory({ operationRepository, cache, appConfig, balanceCalculator }),
       inject: [OperationRepository, CACHE_MANAGER, AppConfig, BalanceCalculatorService],
+    },
+    {
+      provide: GetInvestmentYearDetailsUseCase,
+      useFactory: (operationRepository: OperationRepository, balanceCalculator: BalanceCalculatorService) =>
+        new GetInvestmentYearDetailsUseCaseImpl(operationRepository, balanceCalculator),
+      inject: [OperationRepository, BalanceCalculatorService],
     },
     {
       provide: LoginUseCase,
@@ -58,6 +74,14 @@ import { UserRepository } from '@repositories/UserRepository';
       inject: [UserRepository, CryptoService],
     },
   ],
-  exports: [RegisterOperationUseCase, UpdateOperationUseCase, ListInvestmentYearsUseCase, LoginUseCase, SignUpUseCase],
+  exports: [
+    RegisterOperationUseCase,
+    ListYearOperationsUseCase,
+    UpdateOperationUseCase,
+    ListInvestmentYearsUseCase,
+    GetInvestmentYearDetailsUseCase,
+    LoginUseCase,
+    SignUpUseCase,
+  ],
 })
 export class UseCasesModule {}

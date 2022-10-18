@@ -1,6 +1,6 @@
 FROM node:16-alpine3.16 As development
 
-WORKDIR /home/node/dev/behemot
+WORKDIR /home/node/dev/bahamut
 
 COPY package*.json ./
 COPY prisma ./prisma/

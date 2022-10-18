@@ -36,11 +36,15 @@ export class BalanceCalculatorServiceImpl implements BalanceCalculatorService {
       newHoldings[asset] = holding;
     }
 
+    const balancePercentage = (yearTotals.sells / yearTotals.buys) * 100;
+
+    console.log('Balance percentage is nan', isNaN(balancePercentage), balancePercentage);
+
     return {
       balance: yearBalance,
       holdings: newHoldings,
       totals: yearTotals,
-      balancePercentage: yearTotals.buys / yearTotals.sells,
+      balancePercentage: isNaN(balancePercentage) ? 0 : balancePercentage,
     };
   }
 

@@ -9,7 +9,7 @@ export interface UserProps {
   operations?: Operation[];
 }
 
-const alignUserPropertiesIterability = (user: User) => {
+const alignUserPropertiesEnumerability = (user: User) => {
   Object.defineProperty(user, 'id', { get: () => user['_id'], enumerable: true });
   Object.defineProperty(user, 'email', { get: () => user['_props'].email, enumerable: true });
   Object.defineProperty(user, 'password', { get: () => user['_props'].password, enumerable: true });
@@ -25,7 +25,7 @@ export class User {
   constructor(private _props: UserProps, id?: string) {
     this._id = id ?? crypto.randomUUID();
 
-    alignUserPropertiesIterability(this);
+    alignUserPropertiesEnumerability(this);
   }
 
   get id(): UserKeyType {

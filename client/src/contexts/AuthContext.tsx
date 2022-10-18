@@ -1,4 +1,4 @@
-import { LoginRequest, useAuthService } from "../services/AuthService";
+import { LoginRequest, useAuthService } from "@services/AuthService";
 import React, { PropsWithChildren, useContext, useState } from "react";
 
 import jwtDecode from "jwt-decode";

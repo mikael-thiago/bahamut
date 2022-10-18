@@ -2,12 +2,61 @@ import { Operation, OperationType } from '@entities/Operation';
 
 import { Injectable } from '@nestjs/common';
 import { Operation as OperationDbModel } from '@prisma/client';
-import { OperationRepository } from '@repositories/OperationRepository';
+import { OperationRepository, OperationSortColumn } from '@repositories/OperationRepository';
+import { PagedResult, SortDirection } from 'src/core/shared/PagedResult';
 import { PrismaService } from './PrismaService';
 
 @Injectable()
 export class PrismaOperationRepository implements OperationRepository {
   constructor(private _prismaService: PrismaService) {}
+
+  async getOperationsPaged({
+    userId,
+    year,
+    page,
+    pageSize,
+    sortColumn,
+    sortDirection,
+  }: {
+    userId: string;
+    year: number;
+    page: number;
+    pageSize: number;
+    sortColumn?: OperationSortColumn;
+    sortDirection?: SortDirection;
+  }): Promise<PagedResult<Operation>> {
+    const skip = (page - 1) * pageSize;
+
+    const dbModels = await this._prismaService.operation.findMany({
+      where: {
+        userId,
+        date: {
+          gte: new Date(`${year}-01-01`),
+          lte: new Date(`${year}-12-31`),
+        },
+      },
+      skip,
+      take: pageSize,
+      orderBy: {
+        ...(sortColumn && sortDirection !== undefined && { [sortColumn]: sortDirection }),
+      },
+    });
+
+    const count = await this._prismaService.operation.count();
+
+    const totalPages = Math.ceil(count / pageSize);
+    const nextPage = page >= totalPages ? null : +page + 1;
+    const previousPage = page <= 1 ? null : page - 1;
+
+    return {
+      currentPage: page,
+      items: dbModels.map(this._toEntity),
+      total: count,
+      nextPage,
+      previousPage,
+      totalPages,
+    };
+  }
 
   async saveOperation(operation: Operation): Promise<Operation> {
     const dbModel = this._toDbModel(operation);
@@ -68,6 +117,9 @@ export class PrismaOperationRepository implements OperationRepository {
       });
 
       operationsByYear[year] = yearOperations.map((operation) => this._toEntity(operation));
+      // for (const operation of operationsByYear[year]) {
+      //   console.log(operation.date);
+      // }
     }
 
     return operationsByYear;

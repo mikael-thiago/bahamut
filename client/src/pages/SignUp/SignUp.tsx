@@ -13,9 +13,9 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { FC, useState } from "react";
+import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { SignUpRequest, useAuthService } from "../../services/AuthService";
+import { SignUpRequest, useAuthService } from "@services/AuthService";
 
 import { useFormik } from "formik";
 

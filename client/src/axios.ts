@@ -4,11 +4,14 @@ export const api = axios.create({
   baseURL: "http://localhost:4000",
 });
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(config => {
   if (!config.headers) return config;
 
-  if (!config.headers.Authorization)
-    config.headers.Authorization = `Bearer ${localStorage.getItem("bahamut::user-token")}`;
+  const token = localStorage.getItem("bahamut::user-token");
+
+  if (!token) return config;
+
+  if (!config.headers.Authorization) config.headers.Authorization = `Bearer ${token}`;
 
   return config;
 });
